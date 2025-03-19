@@ -1,20 +1,20 @@
-FROM node:22-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package* .
-COPY ./prisma* .
+COPY ./package.json ./package.json
+COPY ./package-lock.json ./package-lock.json
 
-RUN npx prisma migrate dev
-RUN npx prisma generate
 RUN npm install
-
-ENV DATABASE_URL="postgresql://postgres:random@localhost:5432/postgres"
 
 COPY . .
 
+ENV DATABASE_URL=postgresql://postgres:random@localhost:5432/postgres
+
+RUN DATABASE_URL=$DATABASE_URL npx prisma migrate dev
+RUN npx prisma generate
 RUN npm run build
 
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"] 
+CMD ["npm", "start"]
