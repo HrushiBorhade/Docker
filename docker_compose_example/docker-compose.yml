@@ -7,6 +7,8 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=random
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   docker_compose_example:
     build:
@@ -19,3 +21,6 @@ services:
       - 3000:3000
     depends_on:
       - postgres
+
+volumes: 
+  pgdata:
